@@ -7,8 +7,3 @@ read me ('_')
 ```bash
 run make
 ```
-
-gello
-
-
-monkey
