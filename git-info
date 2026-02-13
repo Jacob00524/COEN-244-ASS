@@ -1,1 +1,21 @@
-git status  ->  See
+git fetch                      -> fetches latest copy of upstream repo
+git rebase                     -> applys changes
+
+git status                     ->  See local tracked and untracked files
+git add <file1> <file2> ...    ->  Add files to be tracked / cached
+git rm --cached <file1>        ->  Remove a tracked file (counter to git add)
+
+git commit -m "a message"      -> Stages the tracked files to be pushed
+git push                       -> All files that have been commited will be pushed
+git push --force               -> When push dosen't work.
+
+git log                        -> See commits (this includes any local commits)
+
+git stash                      -> temporarily caches/removes any changes
+git stash pop                  -> adds changes from git stash back
+
+git diff                       -> shows changes that have not been added using git add
+git diff origin/main           -> shows difference in changes between your local code and the main upstream repo
+
+git show                       -> shows the changes made by the latest commit (the one at the top of git log)
+git show <commit-id>           -> shows changes made by a specific commit
