@@ -38,6 +38,8 @@ Car& Car::operator=(const Car& cpy)
         return *this;
     this->car_id = cpy.car_id;
     this->car_available = cpy.car_available;
+    if (this->car_type)
+        free(this->car_type);
     this->car_type = strdup(cpy.car_type);
     return *this;
 }
