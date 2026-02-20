@@ -11,7 +11,7 @@ class Company
         int add_car(Car *car);
         int get_car(int index, Car** out);
         int set_car(int index, Car* in);
-        int Company::get_car_count();
+        int get_car_count();
 
     private:
         std::vector<Car> cars;
