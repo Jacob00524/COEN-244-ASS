@@ -35,6 +35,52 @@ Customer::Customer(char *name, char *address, char *tele)
     }
 }
 
+Customer::Customer(const Customer& cpy)
+{
+    this->customer_id = cpy.customer_id;
+    if (cpy.customer_name)
+        this->customer_name = strdup(cpy.customer_name);
+    if (cpy.customer_address)
+        this->customer_address = strdup(cpy.customer_address);
+    if (cpy.customer_tele)
+        this->customer_tele = strdup(cpy.customer_tele);
+    if (cpy.cars_rented)
+    {
+        this->cars_rented = (int*)malloc(sizeof(int) * cpy.cars_rented_count);
+        memcpy(this->cars_rented, cpy.cars_rented, sizeof(int) * cpy.cars_rented_count);
+    }
+}
+
+Customer& Customer::operator=(const Customer& cpy)
+{
+    this->customer_id = cpy.customer_id;
+    if (cpy.customer_name)
+    {
+        if (this->customer_name)
+            free(this->customer_name);
+        this->customer_name = strdup(cpy.customer_name);
+    }
+    if (cpy.customer_address)
+    {
+        if (this->customer_address)
+            free(this->customer_address);
+        this->customer_address = strdup(cpy.customer_address);
+    }
+    if (cpy.customer_tele)
+    {
+        if (this->customer_tele)
+            free(this->customer_tele);
+        this->customer_tele = strdup(cpy.customer_tele);
+    }
+    if (cpy.cars_rented)
+    {
+        if (this->cars_rented)
+            free(cars_rented);
+        this->cars_rented = (int*)malloc(sizeof(int) * cpy.cars_rented_count);
+        memcpy(this->cars_rented, cpy.cars_rented, sizeof(int) * cpy.cars_rented_count);
+    }
+}
+
 Customer::~Customer()
 {
     if (customer_name)
