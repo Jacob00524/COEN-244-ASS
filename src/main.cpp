@@ -1,3 +1,12 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+
+#include "LuxuryCar.h"
+#include "StandardCar.h"
+#include "Company.h"
+#include "Customer.h"
+
 /*
 
     TODO:
@@ -13,16 +22,107 @@
 
 */
 
-#include <stdio.h>
+int running = 1;
 
-#include "LuxuryCar.h"
-#include "StandardCar.h"
-#include "Company.h"
-#include "Customer.h"
+void clear_screen()
+{
+    const char *CLEAR_SCREEN_ANSI = "\e[1;1H\e[2J";
+    write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 11);
+}
+
+int wait_on_input(char *out, int max_buffer)
+{
+    if (!fgets(out, max_buffer, stdin))
+        return -1;
+    return 1;
+}
+
+int see_customers_loop()
+{
+    return 0;
+}
+
+int see_car_inventory_loop()
+{
+    return 0;
+}
+
+int add_car_inventory_loop()
+{
+    return 0;
+}
+
+int add_customer_loop()
+{
+    return 0;
+}
+
+
+int main_menu_loop()
+{
+    char chosen_str[10];
+    int chosen_option;
+
+    clear_screen();
+    printf("COEN-CARS management system.\n\tDeveloped by Jacob and Jacob\n");
+    printf("Type the number associated with the option and press `ENTER`.\n");
+    printf("1. See current customers\n");
+    printf("2. See current car inventory\n");
+    printf("3. Add car to inventory\n");
+    printf("4. Add new customer\n");
+    printf("5. Exit\n");
+    printf("Option: ");
+    wait_on_input(chosen_str, sizeof(chosen_str));
+    chosen_option = (int)strtol(chosen_str, NULL, 10);
+
+    if (chosen_option > 5 || chosen_option < 1)
+    {
+        clear_screen();
+        printf("Unknown option %s. Type a number from 1 to 5 (inclusive).\n", chosen_str);
+        printf("Restart in 3 seconds.\n");
+        sleep(3);
+        main_menu_loop();
+    }
+
+    clear_screen();
+    return chosen_option;
+}
 
 int main()
 {
     /* test_main */
+    while(running)
+    {
+        int chosen_menu = main_menu_loop();
+        if (chosen_menu == 5)
+        {
+            running = 0;
+            goto loop_end;
+        }
+
+        switch (chosen_menu)
+        {
+            case 1:
+                see_customers_loop();
+                break;
+            case 2:
+                see_car_inventory_loop();
+                break;
+            case 3:
+                add_car_inventory_loop();
+                break;
+            case 4:
+                add_customer_loop();
+                break;
+            default:
+                running = 0;
+                goto loop_end;
+                break;
+        } 
+        /* Loop cleanup if any */
+        loop_end:
+    }
+    /* Cleanup */
 }
 
 /*
