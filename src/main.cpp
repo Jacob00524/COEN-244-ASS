@@ -1,3 +1,18 @@
+/*
+
+    TODO:
+    Add car specific functions????? There are no virtual functions yet
+    Create UI for managing the company, customers, and cars
+
+    UI probably needs:
+        1. A way to add/remove cars to the company
+        2. A way to add/remove customers
+        3. A way to assign and remove rented cars from customers
+        4. A way to see all current cars
+        5. A way to see all current customers
+
+*/
+
 #include <stdio.h>
 
 #include "LuxuryCar.h"
@@ -6,6 +21,15 @@
 #include "Customer.h"
 
 int main()
+{
+    /* test_main */
+}
+
+/*
+    Just for testing the various functions and features
+    Can be removed later.
+*/
+int test_main()
 {
     Company company(1000);
 
