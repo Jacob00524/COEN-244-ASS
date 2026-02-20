@@ -13,6 +13,12 @@ class Customer
         void customer_get_name(char *name_out, int buff_size);
         void customer_get_tele(char *tele_out, int buff_size);
         void customer_get_address(char *address_out, int buff_size);
+
+        void customer_assign_car(int car_id);
+        int customer_has_car(int car_id); /* returns -1 for non-existant, and index into cars_rented if it exists */
+        int customer_remove_car(int car_id); /* returns 1 if successful, 0 if unsuccessfull */
+        int customer_get_car_count();
+        int customer_get_car_id(int index);
     private:
         int customer_id;
         char *customer_name, *customer_address, *customer_tele;

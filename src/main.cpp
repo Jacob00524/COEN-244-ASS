@@ -13,7 +13,7 @@ int main()
     LuxuryCar luxury_car(0);
     char test_name[256], test_address[1024], test_tele[256];
 
-    Car *test_car;
+    Car *test_car, *test_car_2;
 
     Customer cussy((char*)"Bob Bussy", (char*)"1455 De Maisonneuve Blvd", (char*)"+67 069 420 1984");
 
@@ -31,8 +31,13 @@ int main()
     cussy.customer_get_name(test_name, sizeof(test_name));
     cussy.customer_get_address(test_address, sizeof(test_address));
     cussy.customer_get_tele(test_tele, sizeof(test_tele));
+    cussy.customer_assign_car(test_car->get_id());
 
-    printf("Name: %s\n\tAddress: %s\n\tTele: %s\n", test_name, test_address, test_tele);
+    printf("Name: %s\n\tAddress: %s\n\tTele: %s\n\tRented Cars: %d\n", test_name, test_address, test_tele, cussy.customer_get_car_count());
+    company.get_car(cussy.customer_get_car_id(0), &test_car_2);
 
+    printf("\tCar Type[0]: %s!\n", test_car_2->get_type());
+    printf("\tCar ID[0]: %d!\n", test_car_2->get_id());
+    
     return 0;
 }

@@ -43,6 +43,8 @@ Customer::~Customer()
         free(customer_address);
     if (customer_tele)
         free(customer_tele);
+    if (cars_rented)
+        free(cars_rented);
 }
 
 int Customer::customer_set_name(char *new_name)
@@ -94,4 +96,50 @@ void Customer::customer_get_tele(char *tele_out, int buff_size)
 void Customer::customer_get_address(char *address_out, int buff_size)
 {
     snprintf(address_out, buff_size, "%s", customer_address);
+}
+
+void Customer::customer_assign_car(int car_id)
+{
+    if (!cars_rented)
+        cars_rented = (int*)malloc(sizeof(int));
+    else
+        cars_rented = (int*)realloc(cars_rented, sizeof(int) * (cars_rented_count + 1));
+    cars_rented[cars_rented_count] = car_id;
+    cars_rented_count++;
+}
+
+int Customer::customer_has_car(int car_id)
+{
+    if (!cars_rented)
+        return -1;
+    for (int i = 0; i < cars_rented_count; i++)
+    {
+        if (cars_rented[i] == car_id)
+            return i;
+    }
+    return -1;
+}
+
+int Customer::customer_remove_car(int car_id)
+{
+    int car_index = customer_has_car(car_id);
+    if (car_index == -1)
+        return 0;
+    cars_rented_count--;
+    for (int i = car_index; i < cars_rented_count - 1; i++)
+        cars_rented[i] = cars_rented[i + 1];
+    cars_rented = (int*)realloc(cars_rented, sizeof(int) * cars_rented_count);
+    return 1;
+}
+
+int Customer::customer_get_car_count()
+{
+    return cars_rented_count;
+}
+
+int Customer::customer_get_car_id(int index)
+{
+    if (!cars_rented || cars_rented_count <= index)
+        return -1;
+    return cars_rented[index];
 }
