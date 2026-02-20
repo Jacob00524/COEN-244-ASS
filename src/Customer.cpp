@@ -35,50 +35,61 @@ Customer::Customer(char *name, char *address, char *tele)
     }
 }
 
+/*
+    made to be overwritten later, but ID is assigned just in case
+*/
+Customer::Customer()
+{
+    customer_name = NULL;
+    customer_address = NULL;
+    customer_tele = NULL;
+    customer_id = global_customer_id++;
+}
+
 Customer::Customer(const Customer& cpy)
 {
     this->customer_id = cpy.customer_id;
     if (cpy.customer_name)
         this->customer_name = strdup(cpy.customer_name);
+    else
+        this->customer_name = NULL;
     if (cpy.customer_address)
         this->customer_address = strdup(cpy.customer_address);
+    else
+        this->customer_address = NULL;
     if (cpy.customer_tele)
         this->customer_tele = strdup(cpy.customer_tele);
+    else
+        this->customer_tele = NULL;
     if (cpy.cars_rented)
     {
         this->cars_rented = (int*)malloc(sizeof(int) * cpy.cars_rented_count);
+        this->cars_rented_count = 0;
         memcpy(this->cars_rented, cpy.cars_rented, sizeof(int) * cpy.cars_rented_count);
+    }else
+    {
+        this->cars_rented = NULL;
+        this->cars_rented_count = 0;
     }
 }
 
 Customer& Customer::operator=(const Customer& cpy)
 {
+    if (this == &cpy)
+        return *this;
     this->customer_id = cpy.customer_id;
     if (cpy.customer_name)
-    {
-        if (this->customer_name)
-            free(this->customer_name);
         this->customer_name = strdup(cpy.customer_name);
-    }
     if (cpy.customer_address)
-    {
-        if (this->customer_address)
-            free(this->customer_address);
         this->customer_address = strdup(cpy.customer_address);
-    }
     if (cpy.customer_tele)
-    {
-        if (this->customer_tele)
-            free(this->customer_tele);
         this->customer_tele = strdup(cpy.customer_tele);
-    }
     if (cpy.cars_rented)
     {
-        if (this->cars_rented)
-            free(cars_rented);
         this->cars_rented = (int*)malloc(sizeof(int) * cpy.cars_rented_count);
         memcpy(this->cars_rented, cpy.cars_rented, sizeof(int) * cpy.cars_rented_count);
     }
+    return *this;
 }
 
 Customer::~Customer()
@@ -131,23 +142,35 @@ int Customer::customer_set_address(char *new_address)
 
 void Customer::customer_get_name(char *name_out, int buff_size)
 {
-    snprintf(name_out, buff_size, "%s", customer_name);
+    if (customer_name)
+        snprintf(name_out, buff_size, "%s", customer_name);
+    else
+        snprintf(name_out, buff_size, "Unknown");
 }
 
 void Customer::customer_get_tele(char *tele_out, int buff_size)
 {
-    snprintf(tele_out, buff_size, "%s", customer_tele);
+    if (customer_tele)
+        snprintf(tele_out, buff_size, "%s", customer_tele);
+    else
+        snprintf(tele_out, buff_size, "Unknown");
 }
 
 void Customer::customer_get_address(char *address_out, int buff_size)
 {
-    snprintf(address_out, buff_size, "%s", customer_address);
+    if (customer_address)
+        snprintf(address_out, buff_size, "%s", customer_address);
+    else
+        snprintf(address_out, buff_size, "Unknown");
 }
 
 void Customer::customer_assign_car(int car_id)
 {
     if (!cars_rented)
+    {
         cars_rented = (int*)malloc(sizeof(int));
+        cars_rented_count = 0;
+    }
     else
         cars_rented = (int*)realloc(cars_rented, sizeof(int) * (cars_rented_count + 1));
     cars_rented[cars_rented_count] = car_id;

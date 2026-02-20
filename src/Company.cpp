@@ -41,3 +41,28 @@ int Company::get_car_count()
 {
     return cars.size();
 }
+
+/*
+    THIS HAS TO BE REDONE!
+    Do not simply copy contents of new_customer into customers
+    The memory address of the strings should be different. Memory should be "owned" by the customers array 
+*/
+void Company::add_customer(Customer *new_customer)
+{
+    Customer c(NULL, NULL, NULL);
+    customers.push_back(c);
+    customers.at(customers.size() - 1) = *new_customer;
+}
+
+int Company::get_customer_count()
+{
+    return customers.size();
+}
+
+int Company::get_customer(int index, Customer **customer_out)
+{
+    if (index >= customers.size())
+        return 0;
+    *customer_out = &customers.at(index);
+    return 1;
+}

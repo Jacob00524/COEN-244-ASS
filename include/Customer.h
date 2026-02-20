@@ -1,9 +1,14 @@
+#pragma once
+
 extern int global_customer_id;
 
 class Customer
 {
     public:
         Customer(char *name, char *address, char *tele);
+        Customer();
+        Customer(const Customer& cpy);
+        Customer& operator=(const Customer& cpy);
         ~Customer();
 
         int customer_set_name(char *new_name);
