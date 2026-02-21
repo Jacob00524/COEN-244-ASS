@@ -49,15 +49,19 @@ int see_customers_loop()
 
 int see_car_inventory_loop()
 {
+    char resp[10];
+
     clear_screen();
     printf("COEN-CARS car inventory...\n");
     Car *c;
     for (int i = 0; i < COEN_CARS.get_car_count(); i++)
     {
         COEN_CARS.get_car(i, &c);
-        printf("Car ptinging here.");
+        c->print_car();
     }
-    
+    printf("Press enter to continue.\n");
+    wait_on_input(resp, sizeof(resp));
+
     return 0;
 }
 

@@ -80,3 +80,8 @@ void Car::set_available(int availability)
 {
     car_available = availability;
 }
+
+void Car::print_car()
+{
+    printf("ID: %d\tType: %s\t%s\n", car_id, car_type, car_available ? "available" : "not available");
+}

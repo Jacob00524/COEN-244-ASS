@@ -18,6 +18,8 @@ class Car
         char *get_type();
         int is_available();
 
+        void print_car();
+
         void set_id(int id);
         void set_type(const char *type);
         void set_available(int availability);
