@@ -44,6 +44,8 @@ Customer::Customer()
     customer_address = NULL;
     customer_tele = NULL;
     customer_id = global_customer_id++;
+    cars_rented = NULL;
+    cars_rented_count = 0;
 }
 
 Customer::Customer(const Customer& cpy)
