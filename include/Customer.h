@@ -24,6 +24,8 @@ class Customer
         int customer_remove_car(int car_id); /* returns 1 if successful, 0 if unsuccessfull */
         int customer_get_car_count();
         int customer_get_car_id(int index);
+
+        void customer_print();
     private:
         int customer_id;
         char *customer_name, *customer_address, *customer_tele;

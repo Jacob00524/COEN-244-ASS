@@ -212,3 +212,15 @@ int Customer::customer_get_car_id(int index)
         return -1;
     return cars_rented[index];
 }
+
+void Customer::customer_print()
+{
+    printf("Name: %s\n\tAddress: %s\n\tTelephone: %s\n\tCar Count: %d\n\tListed Cars: ", customer_name == NULL ? "Unknown" : customer_name, customer_address == NULL ? "Unknown" : customer_address, customer_tele == NULL ? "Unknown" : customer_tele, cars_rented_count);
+    if (cars_rented_count == 0)
+    {
+        printf("None.\n");
+        return;
+    }
+    for (int i = 0; i < cars_rented_count; i++)
+        printf("%d%s", cars_rented[i], i == (cars_rented_count - 1) ? "\n" : ",");    
+}

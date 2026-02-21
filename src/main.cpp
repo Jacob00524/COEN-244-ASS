@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 
 #include "LuxuryCar.h"
@@ -22,6 +23,7 @@
 
 */
 
+Company COEN_CARS(1000);
 int running = 1;
 
 void clear_screen()
@@ -32,8 +34,11 @@ void clear_screen()
 
 int wait_on_input(char *out, int max_buffer)
 {
+    int count;
     if (!fgets(out, max_buffer, stdin))
         return -1;
+    if (out[strlen(out) - 1] == '\n')
+        out[strlen(out) - 1] = 0;
     return 1;
 }
 
@@ -44,19 +49,97 @@ int see_customers_loop()
 
 int see_car_inventory_loop()
 {
+    clear_screen();
+    printf("COEN-CARS car inventory...\n");
+    Car *c;
+    for (int i = 0; i < COEN_CARS.get_car_count(); i++)
+    {
+        COEN_CARS.get_car(i, &c);
+        printf("Car ptinging here.");
+    }
+    
     return 0;
 }
 
 int add_car_inventory_loop()
 {
-    return 0;
+    char response[10];
+
+    clear_screen();
+    printf("Add a new car to inventory.\n");
+
+    printf("Is Standard (Y or N)? ");
+    if (!wait_on_input(response, sizeof(response)))
+        return 0;
+    if (response[0] == 'Y' || response[0] == 'y')
+    {
+        StandardCar car(0);
+        COEN_CARS.add_car(&car);
+    }else
+    {
+        LuxuryCar car(0);
+        COEN_CARS.add_car(&car);
+    }
+    clear_screen();
+    printf("Added car. Continue in 3 seconds.\n");
+    sleep(3);
+    clear_screen();
+    return 1;
 }
 
 int add_customer_loop()
 {
+    int loop = 1;
+    char response[10], customer_name[256], customer_address[1024], customer_tele[256];
+
+    Customer c;
+
+    while (loop)
+    {
+        clear_screen();
+        printf("Add a car customer.\n");
+
+        printf("Customer Name (Can be blank):");
+        if (!wait_on_input(customer_name, sizeof(customer_name)))
+            goto REDO;
+
+        printf("Customer Address (Can be blank):");
+        if (!wait_on_input(customer_address, sizeof(customer_name)))
+            goto REDO;
+
+        printf("Customer Telephone (Can be blank):");
+        if (!wait_on_input(customer_tele, sizeof(customer_tele)))
+            goto REDO;
+
+        if (customer_name[0])
+            c.customer_set_name(customer_name);
+        if (customer_address[0])
+            c.customer_set_address(customer_address);
+        if (customer_tele[0])
+            c.customer_set_tele(customer_tele);
+
+        clear_screen();
+        printf("Adding the following customer.\n");
+        c.customer_print();
+        printf("Enter Y to continue, N to cancel.\n");
+        if (!wait_on_input(response, sizeof(response)))
+            return 0;
+        if (response[0] == 'Y')
+            return 1;
+        else
+            return 0;
+
+        return 1;
+
+REDO:
+        clear_screen();
+        printf("Error, retrying.\n");
+        printf("Restart in 3 seconds.\n");
+        sleep(3);
+    }
+
     return 0;
 }
-
 
 int main_menu_loop()
 {
@@ -123,6 +206,7 @@ int main()
         loop_end:
     }
     /* Cleanup */
+    return 0;
 }
 
 /*
