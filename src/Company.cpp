@@ -67,7 +67,7 @@ int Company::get_customer(int index, Customer **customer_out)
     return 1;
 }
 
-std::vector<Customer> get_customers_full()
+std::vector<Customer> Company::get_customers_full()
 {
     return customers;
 }

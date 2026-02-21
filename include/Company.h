@@ -18,6 +18,7 @@ class Company
         void add_customer(Customer *new_customer);
         int get_customer_count();
         int get_customer(int index, Customer **customer_out);
+        std::vector<Customer> get_customers_full();
 
     private:
         std::vector<Customer> customers;

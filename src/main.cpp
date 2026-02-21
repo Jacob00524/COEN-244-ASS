@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <iostream>
 
 #include "LuxuryCar.h"
 #include "StandardCar.h"
@@ -45,6 +46,17 @@ int wait_on_input(char *out, int max_buffer)
 int see_customers_loop()
 {
     clear_screen();
+
+    if(COEN_CARS.get_customers_full().empty())
+    {
+        printf("No customers\n");
+        sleep(2);
+        clear_screen();
+        return 1;
+    }
+    for(auto my_c:COEN_CARS.get_customers_full()){
+        my_c.customer_print();
+    }
     return 0;
 }
 
