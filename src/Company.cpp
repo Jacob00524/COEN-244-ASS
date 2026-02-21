@@ -66,3 +66,9 @@ int Company::get_customer(int index, Customer **customer_out)
     *customer_out = &customers.at(index);
     return 1;
 }
+
+std::vector<Customer> get_customers_full()
+{
+    //hhjcgwjhcgqcwouiqb
+    return customers;
+}
