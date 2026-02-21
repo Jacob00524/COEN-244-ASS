@@ -5,5 +5,6 @@ read me ('_')
 ## Build
 
 ```bash
-run make
+Linux: run make
+Windows: compile using "g++ -I include/ src/*.cpp -o bob.exe" and execute bob
 ```
