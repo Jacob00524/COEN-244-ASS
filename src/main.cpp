@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <iostream>
 
 #include "LuxuryCar.h"
 #include "StandardCar.h"
@@ -45,6 +44,9 @@ int wait_on_input(char *out, int max_buffer)
 
 int see_customers_loop()
 {
+
+    char resp[10];
+
     clear_screen();
 
     if(COEN_CARS.get_customers_full().empty())
@@ -57,6 +59,9 @@ int see_customers_loop()
     for(auto my_c:COEN_CARS.get_customers_full()){
         my_c.customer_print();
     }
+    printf("Press enter to continue.\n");
+    wait_on_input(resp, sizeof(resp));
+
     return 0;
 }
 
@@ -138,6 +143,7 @@ int add_customer_loop()
         clear_screen();
         printf("Adding the following customer.\n");
         c.customer_print();
+        COEN_CARS.add_customer(&c);
         printf("Enter Y to continue, N to cancel.\n");
         if (!wait_on_input(response, sizeof(response)))
             return 0;
