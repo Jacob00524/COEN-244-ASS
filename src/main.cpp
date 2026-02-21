@@ -44,6 +44,7 @@ int wait_on_input(char *out, int max_buffer)
 
 int see_customers_loop()
 {
+    clear_screen();
     return 0;
 }
 

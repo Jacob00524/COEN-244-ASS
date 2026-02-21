@@ -69,6 +69,5 @@ int Company::get_customer(int index, Customer **customer_out)
 
 std::vector<Customer> get_customers_full()
 {
-    //hhjcgwjhcgqcwouiqb
     return customers;
 }
