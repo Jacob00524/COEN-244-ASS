@@ -26,6 +26,8 @@
 Company COEN_CARS(1000);
 int running = 1;
 
+int see_car_inventory_loop(int);
+
 void clear_screen()
 {
     const char *CLEAR_SCREEN_ANSI = "\e[1;1H\e[2J";
@@ -93,7 +95,8 @@ int edit_customers_loop()
         if (found == 0)
             printf("Could not find customer with that ID.\n");
     }
-    printf("Type cars to be add(seperated by commas):");
+    see_car_inventory_loop(1);
+    printf("Type cars to be added(seperated by commas):");
     wait_on_input(car_id_buff, sizeof(car_id_buff));
     if (car_id_buff[0])
     {
@@ -125,10 +128,8 @@ int edit_customers_loop()
     return 1;
 }
 
-int see_car_inventory_loop()
+int see_car_inventory_loop(int use_case)
 {
-    char resp[10];
-
     clear_screen();
     printf("COEN-CARS car inventory...\n");
     Car *c;
@@ -137,10 +138,15 @@ int see_car_inventory_loop()
         COEN_CARS.get_car(i, &c);
         c->print_car();
     }
-    printf("Press enter to continue.\n");
-    wait_on_input(resp, sizeof(resp));
-
-    return 0;
+    if(use_case==0)
+    {
+        char resp[10];
+        printf("Press enter to continue.\n");
+        wait_on_input(resp, sizeof(resp));
+        return 0;
+    }
+        printf("\n\n");
+        return 0;
 }
 
 int add_car_inventory_loop()
@@ -242,7 +248,7 @@ int main_menu_loop()
     wait_on_input(chosen_str, sizeof(chosen_str));
     chosen_option = (int)strtol(chosen_str, NULL, 10);
 
-    if (chosen_option > 5 || chosen_option < 1)
+    if (chosen_option > 6 || chosen_option < 1)
     {
         clear_screen();
         printf("Unknown option %s. Type a number from 1 to 5 (inclusive).\n", chosen_str);
@@ -273,7 +279,7 @@ int main()
                 see_customers_loop();
                 break;
             case 2:
-                see_car_inventory_loop();
+                see_car_inventory_loop(0);
                 break;
             case 3:
                 add_car_inventory_loop();
