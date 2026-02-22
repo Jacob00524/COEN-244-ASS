@@ -66,7 +66,7 @@ Customer::Customer(const Customer& cpy)
     if (cpy.cars_rented)
     {
         this->cars_rented = (int*)malloc(sizeof(int) * cpy.cars_rented_count);
-        this->cars_rented_count = 0;
+        this->cars_rented_count = cpy.cars_rented_count;
         memcpy(this->cars_rented, cpy.cars_rented, sizeof(int) * cpy.cars_rented_count);
     }else
     {
@@ -88,6 +88,7 @@ Customer& Customer::operator=(const Customer& cpy)
         this->customer_tele = strdup(cpy.customer_tele);
     if (cpy.cars_rented)
     {
+        this->cars_rented_count = cpy.cars_rented_count;
         this->cars_rented = (int*)malloc(sizeof(int) * cpy.cars_rented_count);
         memcpy(this->cars_rented, cpy.cars_rented, sizeof(int) * cpy.cars_rented_count);
     }
@@ -166,19 +167,6 @@ void Customer::customer_get_address(char *address_out, int buff_size)
         snprintf(address_out, buff_size, "Unknown");
 }
 
-void Customer::customer_assign_car(int car_id)
-{
-    if (!cars_rented)
-    {
-        cars_rented = (int*)malloc(sizeof(int));
-        cars_rented_count = 0;
-    }
-    else
-        cars_rented = (int*)realloc(cars_rented, sizeof(int) * (cars_rented_count + 1));
-    cars_rented[cars_rented_count] = car_id;
-    cars_rented_count++;
-}
-
 int Customer::customer_has_car(int car_id)
 {
     if (!cars_rented)
@@ -189,6 +177,21 @@ int Customer::customer_has_car(int car_id)
             return i;
     }
     return -1;
+}
+
+void Customer::customer_assign_car(int car_id)
+{
+    if (customer_has_car(car_id) != -1)
+        return;
+    if (!cars_rented)
+    {
+        cars_rented = (int*)malloc(sizeof(int));
+        cars_rented_count = 0;
+    }
+    else
+        cars_rented = (int*)realloc(cars_rented, sizeof(int) * (cars_rented_count + 1));
+    cars_rented[cars_rented_count] = car_id;
+    cars_rented_count++;
 }
 
 int Customer::customer_remove_car(int car_id)
@@ -217,7 +220,7 @@ int Customer::customer_get_car_id(int index)
 
 void Customer::customer_print()
 {
-    printf("Name: %s\n\tAddress: %s\n\tTelephone: %s\n\tCar Count: %d\n\tListed Cars: ", customer_name == NULL ? "Unknown" : customer_name, customer_address == NULL ? "Unknown" : customer_address, customer_tele == NULL ? "Unknown" : customer_tele, cars_rented_count);
+    printf("%d Name: %s\n\tAddress: %s\n\tTelephone: %s\n\tCar Count: %d\n\tListed Cars: ", customer_id, customer_name == NULL ? "Unknown" : customer_name, customer_address == NULL ? "Unknown" : customer_address, customer_tele == NULL ? "Unknown" : customer_tele, cars_rented_count);
     if (cars_rented_count == 0)
     {
         printf("None.\n");
@@ -225,4 +228,9 @@ void Customer::customer_print()
     }
     for (int i = 0; i < cars_rented_count; i++)
         printf("%d%s", cars_rented[i], i == (cars_rented_count - 1) ? "\n" : ",");    
+}
+
+int Customer::customer_get_id()
+{
+    return customer_id;
 }

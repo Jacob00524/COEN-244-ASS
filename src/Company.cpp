@@ -13,9 +13,21 @@ Company::~Company()
 
 }
 
+int Company::car_exists(int id)
+{
+    for (int i = 0; i < cars.size(); i++)
+    {
+        if (id == cars.at(i).get_id())
+            return 1;
+    }
+    return 0;
+}
+
 int Company::add_car(Car *car)
 {
     if (cars.size() >= max_cars)
+        return 0;
+    if (car_exists(car->get_id()))
         return 0;
     cars.push_back(*car);
     return 1;
@@ -64,6 +76,34 @@ int Company::get_customer(int index, Customer **customer_out)
     if (index >= customers.size())
         return 0;
     *customer_out = &customers.at(index);
+    return 1;
+}
+
+int Company::assign_car_to_customer(int customer_id, int car_id)
+{
+    if (!car_exists(car_id))
+        return 0;
+    for (int i = 0; i < customers.size(); i++)
+    {
+        if (customers.at(i).customer_get_id() == customer_id)
+        {
+            customers.at(i).customer_assign_car(car_id);
+        }
+    }    
+    return 1;
+}
+
+int Company::remove_car_from_customer(int customer_id, int car_id)
+{
+    if (!car_exists(car_id))
+        return 0;
+    for (int i = 0; i < customers.size(); i++)
+    {
+        if (customers.at(i).customer_get_id() == customer_id)
+        {
+            customers.at(i).customer_remove_car(car_id);
+        }
+    }
     return 1;
 }
 

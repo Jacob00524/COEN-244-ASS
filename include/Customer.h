@@ -26,6 +26,7 @@ class Customer
         int customer_get_car_id(int index);
 
         void customer_print();
+        int customer_get_id();
     private:
         int customer_id;
         char *customer_name, *customer_address, *customer_tele;

@@ -65,6 +65,66 @@ int see_customers_loop()
     return 0;
 }
 
+int edit_customers_loop()
+{
+    int i_cust_id, found = 0, next_car_id;
+    Customer *c;
+    char cust_id[20], car_id_buff[256], *next_car_id_str;
+
+    while (!found)
+    {
+        clear_screen();
+        if (see_customers_loop())
+            return 0;
+
+        printf("Type a customer ID to edit:");
+        wait_on_input(cust_id, sizeof(cust_id));
+        i_cust_id = (int)strtol(cust_id, NULL, 10);
+
+        for (int i = 0; i < COEN_CARS.get_customer_count(); i++)
+        {
+            COEN_CARS.get_customer(i, &c);
+            if (c->customer_get_id() == i_cust_id)
+            {
+                found = 1;
+                break;
+            }
+        }
+        if (found == 0)
+            printf("Could not find customer with that ID.\n");
+    }
+    printf("Type cars to be add(seperated by commas):");
+    wait_on_input(car_id_buff, sizeof(car_id_buff));
+    if (car_id_buff[0])
+    {
+        next_car_id_str = car_id_buff;
+        do
+        {
+            next_car_id = (int)strtol(next_car_id_str, NULL, 10);
+            COEN_CARS.assign_car_to_customer(c->customer_get_id(), next_car_id);
+            next_car_id_str = strstr(next_car_id_str, ",");
+            if (next_car_id_str)
+                next_car_id_str++;
+        }while (next_car_id_str);
+    }
+
+    printf("Type cars to be removed(seperated by commas):");
+    wait_on_input(car_id_buff, sizeof(car_id_buff));
+    if (!car_id_buff[0])
+        return 0;
+    next_car_id_str = car_id_buff;
+    do
+    {
+        next_car_id = (int)strtol(next_car_id_str, NULL, 10);
+        c->customer_remove_car(next_car_id);
+        next_car_id_str = strstr(next_car_id_str, ",");
+        if (next_car_id_str)
+            next_car_id_str++;
+    }while (next_car_id_str);
+
+    return 1;
+}
+
 int see_car_inventory_loop()
 {
     char resp[10];
@@ -176,7 +236,8 @@ int main_menu_loop()
     printf("2. See current car inventory\n");
     printf("3. Add car to inventory\n");
     printf("4. Add new customer\n");
-    printf("5. Exit\n");
+    printf("5. Edit Customer.\n");
+    printf("6. Exit\n");
     printf("Option: ");
     wait_on_input(chosen_str, sizeof(chosen_str));
     chosen_option = (int)strtol(chosen_str, NULL, 10);
@@ -200,7 +261,7 @@ int main()
     while(running)
     {
         int chosen_menu = main_menu_loop();
-        if (chosen_menu == 5)
+        if (chosen_menu == 6)
         {
             running = 0;
             goto loop_end;
@@ -219,6 +280,9 @@ int main()
                 break;
             case 4:
                 add_customer_loop();
+                break;
+            case 5:
+                edit_customers_loop();
                 break;
             default:
                 running = 0;
