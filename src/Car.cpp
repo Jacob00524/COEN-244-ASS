@@ -19,7 +19,7 @@ Car::Car(const char *type, int availability)
 Car::~Car()
 {
     car_id = 0;
-    car_available = 0;
+    car_available = 1;
     if (car_type)
         free(car_type);
 }

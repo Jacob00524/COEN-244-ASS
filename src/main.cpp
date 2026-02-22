@@ -69,7 +69,7 @@ int see_customers_loop()
 
 int edit_customers_loop()
 {
-    int i_cust_id, found = 0, next_car_id;
+    int i_cust_id, found = 0, next_car_id, result;
     Customer *c;
     char cust_id[20], car_id_buff[256], *next_car_id_str;
 
@@ -81,6 +81,14 @@ int edit_customers_loop()
 
         printf("Type a customer ID to edit:");
         wait_on_input(cust_id, sizeof(cust_id));
+        if (!cust_id[0])
+        {
+            clear_screen();
+            printf("Not a valid customer id...\n");
+            printf("Press enter to continue...\n");
+            wait_on_input(cust_id, sizeof(cust_id));
+            return 0;
+        }
         i_cust_id = (int)strtol(cust_id, NULL, 10);
 
         for (int i = 0; i < COEN_CARS.get_customer_count(); i++)
@@ -104,7 +112,9 @@ int edit_customers_loop()
         do
         {
             next_car_id = (int)strtol(next_car_id_str, NULL, 10);
-            COEN_CARS.assign_car_to_customer(c->customer_get_id(), next_car_id);
+            result = COEN_CARS.assign_car_to_customer(c->customer_get_id(), next_car_id);
+            if (!result)
+                printf("There was an error assigning car ID (%d), skipping it.\nMake sure the car ID is correct and available.\n", next_car_id);
             next_car_id_str = strstr(next_car_id_str, ",");
             if (next_car_id_str)
                 next_car_id_str++;
@@ -130,23 +140,24 @@ int edit_customers_loop()
 
 int see_car_inventory_loop(int use_case)
 {
+    Car *c;
+
     clear_screen();
     printf("COEN-CARS car inventory...\n");
-    Car *c;
     for (int i = 0; i < COEN_CARS.get_car_count(); i++)
     {
         COEN_CARS.get_car(i, &c);
         c->print_car();
     }
-    if(use_case==0)
+    if(use_case == 0)
     {
         char resp[10];
         printf("Press enter to continue.\n");
         wait_on_input(resp, sizeof(resp));
         return 0;
     }
-        printf("\n\n");
-        return 0;
+    printf("\n\n");
+    return 0;
 }
 
 int add_car_inventory_loop()
@@ -161,11 +172,11 @@ int add_car_inventory_loop()
         return 0;
     if (response[0] == 'Y' || response[0] == 'y')
     {
-        StandardCar car(0);
+        StandardCar car(1);
         COEN_CARS.add_car(&car);
     }else
     {
-        LuxuryCar car(0);
+        LuxuryCar car(1);
         COEN_CARS.add_car(&car);
     }
     clear_screen();
