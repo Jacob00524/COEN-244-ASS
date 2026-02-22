@@ -199,10 +199,15 @@ int Customer::customer_remove_car(int car_id)
     int car_index = customer_has_car(car_id);
     if (car_index == -1)
         return 0;
-    cars_rented_count--;
     for (int i = car_index; i < cars_rented_count - 1; i++)
         cars_rented[i] = cars_rented[i + 1];
-    cars_rented = (int*)realloc(cars_rented, sizeof(int) * cars_rented_count);
+    if (cars_rented_count == 1)
+    {
+        free(cars_rented);
+        cars_rented = NULL;
+    }else
+        cars_rented = (int*)realloc(cars_rented, sizeof(int) * cars_rented_count);
+    cars_rented_count--;
     return 1;
 }
 

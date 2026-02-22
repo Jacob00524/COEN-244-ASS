@@ -94,19 +94,22 @@ int Company::assign_car_to_customer(int customer_id, int car_id)
             customers.at(i).customer_assign_car(car_id);
             cars.at(car_index).set_available(0);
         }
-    }    
+    }
     return 1;
 }
 
 int Company::remove_car_from_customer(int customer_id, int car_id)
 {
-    if (car_exists(car_id) == -1)
+    int car_index;
+
+    if ((car_index = car_exists(car_id)) == -1)
         return 0;
     for (int i = 0; i < customers.size(); i++)
     {
         if (customers.at(i).customer_get_id() == customer_id)
         {
-            customers.at(i).customer_remove_car(car_id);
+            if (customers.at(i).customer_remove_car(car_id))
+                cars.at(car_index).set_available(1);
         }
     }
     return 1;

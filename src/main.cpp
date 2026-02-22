@@ -106,7 +106,7 @@ int edit_customers_loop()
     see_car_inventory_loop(1);
     printf("Type cars to be added(seperated by commas):");
     wait_on_input(car_id_buff, sizeof(car_id_buff));
-    if (car_id_buff[0])
+    if (car_id_buff[0]) /* Check if something was typed */
     {
         next_car_id_str = car_id_buff;
         do
@@ -123,13 +123,13 @@ int edit_customers_loop()
 
     printf("Type cars to be removed(seperated by commas):");
     wait_on_input(car_id_buff, sizeof(car_id_buff));
-    if (!car_id_buff[0])
-        return 0;
+    if (!car_id_buff[0]) /* just exit if nothing was typed */
+        return 1;
     next_car_id_str = car_id_buff;
     do
     {
         next_car_id = (int)strtol(next_car_id_str, NULL, 10);
-        c->customer_remove_car(next_car_id);
+        COEN_CARS.remove_car_from_customer(c->customer_get_id(), next_car_id);
         next_car_id_str = strstr(next_car_id_str, ",");
         if (next_car_id_str)
             next_car_id_str++;
@@ -168,7 +168,8 @@ int add_car_inventory_loop()
     printf("Add a new car to inventory.\n");
 
     printf("Is Standard (Y or N)? ");
-    if (!wait_on_input(response, sizeof(response)))
+    wait_on_input(response, sizeof(response));
+    if (!response[0])
         return 0;
     if (response[0] == 'Y' || response[0] == 'y')
     {
@@ -218,18 +219,18 @@ int add_customer_loop()
             c.customer_set_tele(customer_tele);
 
         clear_screen();
-        printf("Adding the following customer.\n");
+        printf("Add the following customer?\n");
         c.customer_print();
-        COEN_CARS.add_customer(&c);
         printf("Enter Y to continue, N to cancel.\n");
         if (!wait_on_input(response, sizeof(response)))
             return 0;
-        if (response[0] == 'Y')
+        if (response[0] == 'Y' || response[0] == 'y')
+        {
+            COEN_CARS.add_customer(&c);
             return 1;
-        else
+        }
+        else /* If nothing is typed default to cancel */
             return 0;
-
-        return 1;
 
 REDO:
         clear_screen();
@@ -259,7 +260,7 @@ int main_menu_loop()
     wait_on_input(chosen_str, sizeof(chosen_str));
     chosen_option = (int)strtol(chosen_str, NULL, 10);
 
-    if (chosen_option > 6 || chosen_option < 1)
+    if (!chosen_str[0] || chosen_option > 6 || chosen_option < 1)
     {
         clear_screen();
         printf("Unknown option %s. Type a number from 1 to 5 (inclusive).\n", chosen_str);
